@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "914691757426",
+    "project_id": "spotify-clone-app-cec22",
+    "storage_bucket": "spotify-clone-app-cec22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914691757426:android:b219e86a794cc5dd4879eb",
+        "android_client_info": {
+          "package_name": "com.hfad.spotifycloneapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMvOYzAuxOzIYthj6pHEP95ra-XnkERDI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
