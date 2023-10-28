@@ -1,4 +1,4 @@
-package com.hfad.spotifycloneapp.data.other
+package com.hfad.spotifycloneapp.other
 
 open class Event<out T>(private val data: T) {
 

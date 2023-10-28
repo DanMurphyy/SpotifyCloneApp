@@ -12,8 +12,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.hfad.spotifycloneapp.R
-import com.hfad.spotifycloneapp.data.other.Constants.NOTIFICATION_CHANNEL_ID
-import com.hfad.spotifycloneapp.data.other.Constants.NOTIFICATION_ID
+import com.hfad.spotifycloneapp.other.Constants.NOTIFICATION_CHANNEL_ID
+import com.hfad.spotifycloneapp.other.Constants.NOTIFICATION_ID
 
 class MusicNotificationManager(
     private val context: Context,

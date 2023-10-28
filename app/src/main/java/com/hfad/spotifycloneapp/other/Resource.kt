@@ -1,4 +1,4 @@
-package com.hfad.spotifycloneapp.data.other
+package com.hfad.spotifycloneapp.other
 
 class Resource<out T>(val status: Status, val data: T?, message: String?) {
     companion object {

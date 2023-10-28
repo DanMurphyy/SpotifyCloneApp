@@ -2,26 +2,30 @@ package com.hfad.spotifycloneapp.exoplayer
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
 import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.hfad.spotifycloneapp.data.other.Constants.MEDIA_ROOT_ID
 import com.hfad.spotifycloneapp.exoplayer.callbacks.MusicPlaybackPreparer
 import com.hfad.spotifycloneapp.exoplayer.callbacks.MusicPlayerEventListener
 import com.hfad.spotifycloneapp.exoplayer.callbacks.MusicPlayerNotificationListener
+import com.hfad.spotifycloneapp.other.Constants.MEDIA_ROOT_ID
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 private const val SERVICE_TAG = "MusicService"
 
+@AndroidEntryPoint
 class MusicService : MediaBrowserServiceCompat() {
 
     @Inject
@@ -60,8 +64,12 @@ class MusicService : MediaBrowserServiceCompat() {
         }
 
         val activityIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let {
-            PendingIntent.getActivity(this, 0, it, 0)
+            PendingIntent.getActivity(
+                this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT or
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE else 0
+            )
         }
+
 
         mediaSession = MediaSessionCompat(this, SERVICE_TAG).apply {
             setSessionActivity(activityIntent)
@@ -92,7 +100,7 @@ class MusicService : MediaBrowserServiceCompat() {
         mediaSessionConnector.setQueueNavigator(MusicQueueNavigator())
         mediaSessionConnector.setPlayer(exoPlayer)
 
-        musicPlayerEventListener == MusicPlayerEventListener(this)
+        musicPlayerEventListener = MusicPlayerEventListener(this)
         exoPlayer.addListener(musicPlayerEventListener)
         musicNotificationManager.showNotification(exoPlayer)
     }
@@ -144,14 +152,11 @@ class MusicService : MediaBrowserServiceCompat() {
             MEDIA_ROOT_ID -> {
                 val resultSent = firebaseMusicSource.whenReady { isInitialized ->
                     if (isInitialized) {
-                        result.sendResult(firebaseMusicSource.asMediaItems())
-                        if (!isPlayerInitialized && firebaseMusicSource.songs.isNotEmpty()) {
-                            preparePlayer(
-                                firebaseMusicSource.songs,
-                                firebaseMusicSource.songs[0],
-                                false
-                            )
-                            isPlayerInitialized = true
+                        serviceScope.launch {
+                            Log.d("MusicService", "Firebase songs count: ${firebaseMusicSource.songs.size}")
+                            val mediaItems = firebaseMusicSource.asMediaItems()
+                            Log.d("MusicService", "MediaItems count: ${mediaItems.size}")
+                            result.sendResult(mediaItems.toMutableList())
                         }
                     } else {
                         result.sendResult(null)
@@ -163,5 +168,6 @@ class MusicService : MediaBrowserServiceCompat() {
             }
         }
     }
+
 
 }

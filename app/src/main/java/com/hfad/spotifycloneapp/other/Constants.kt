@@ -1,4 +1,4 @@
-package com.hfad.spotifycloneapp.data.other
+package com.hfad.spotifycloneapp.other
 
 object Constants {
     const val SONG_COLLECTION = "songs"

@@ -9,9 +9,9 @@ import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.hfad.spotifycloneapp.data.other.Constants.NETWORK_ERROR
-import com.hfad.spotifycloneapp.data.other.Event
-import com.hfad.spotifycloneapp.data.other.Resource
+import com.hfad.spotifycloneapp.other.Constants.NETWORK_ERROR
+import com.hfad.spotifycloneapp.other.Event
+import com.hfad.spotifycloneapp.other.Resource
 
 class MusicServiceConnection(
     context: Context

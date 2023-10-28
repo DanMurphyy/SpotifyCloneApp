@@ -44,12 +44,14 @@ class FirebaseMusicSource @Inject constructor(
     fun asMediaSource(dataSourceFactory: DefaultDataSourceFactory): ConcatenatingMediaSource {
         val concatenatingMediaSource = ConcatenatingMediaSource()
         songs.forEach { song ->
+            val mediaItem = MediaItem.fromUri(song.getString(METADATA_KEY_MEDIA_URI))
             val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(MediaItem.fromUri(song.getString(METADATA_KEY_MEDIA_URI)))
+                .createMediaSource(mediaItem)
             concatenatingMediaSource.addMediaSource(mediaSource)
         }
         return concatenatingMediaSource
     }
+
 
     fun asMediaItems() = songs.map { song ->
         val desc = MediaDescriptionCompat.Builder()
