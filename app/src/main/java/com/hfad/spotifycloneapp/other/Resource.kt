@@ -1,6 +1,6 @@
 package com.hfad.spotifycloneapp.other
 
-class Resource<out T>(val status: Status, val data: T?, message: String?) {
+class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {
         fun <T> success(data: T?) = Resource(Status.SUCCESS, data, null)
 
